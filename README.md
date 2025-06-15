@@ -1,50 +1,37 @@
-# Welcome to your Expo app 👋
+# Overview
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This app is my first attempt at building a mobile app using React Native. My goal is to take the first step in the mobile development and have a good grasp on CRUD operations, state management, and navigation in a mobile environment. I am also looking to improve my skills in JavaScript and familiarize myself with the React Native framework.
 
-## Get started
+My app is called "Password managers" which is used to store all your passwords in different platform. It only allows to create your stored password, and remove it. The main page will list all of your inputs in a format [platform - key] then [memo - password]. When we open the app, it asks you to enter a pin code, or create a new one if you don't have it. After entering the pin code, you can see the main page. You can renew the pin code in the setting page as well.
 
-1. Install dependencies
+[Software Demo Video](https://youtu.be/M6JdJWBuhN0)
 
-   ```bash
-   npm install
-   ```
+# Development Environment
 
-2. Start the app
+Prerequisites:
+- The `Expo App` can be downloaded from the App Store or Google Play Store through your mobile. We need it to test the real app on a device.
 
-   ```bash
-   npx expo start
-   ```
+To run it, you need to:
 
-In the output, you'll find options to open the app in a
+1. Install Node.js and npm
+2. Install the dependencies by running `npm install`
+3. Start the expo server with `npx expo start`
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Language used:
+- React Native
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Framework:
+- Expo
 
-## Get a fresh project
+# Useful Websites
 
-When you're ready, run:
+{Make a list of websites that you found helpful in this project}
+* [Expo official documentation](https://docs.expo.dev/get-started/introduction/)
+* [Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
+* [React Native documentation](https://reactnative.dev/docs/getting-started)
 
-```bash
-npm run reset-project
-```
+# Future Work
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+* Build the real apk
+* Build it with Kotlin
+* More security with the App

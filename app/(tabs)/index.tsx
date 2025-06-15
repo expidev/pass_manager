@@ -1,75 +1,88 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import Item from '@/components/Item';
+import { ItemProps } from '@/interface/ItemProps';
+import { RootStackParamList } from '@/interface/Route';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+type NavigationProp = StackNavigationProp<RootStackParamList, 'create'>;
 
-export default function HomeScreen() {
+// list the items in the pass list, have the create button on the top right corner to 
+// create a new item in the pass list
+export default function Index() {
+  const [passList, setPassList] = useState([]);
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleRemove = async (id: number) => {
+    try {
+      const storedPassList = await SecureStore.getItemAsync('pass-list');
+      if (storedPassList) {
+        const updatedList = JSON.parse(storedPassList).filter((item: ItemProps) => item.id !== id);
+        await SecureStore.setItemAsync('pass-list', JSON.stringify(updatedList));
+        setPassList(updatedList);
+      }
+    } catch (error) {
+      console.error('Error removing an item:', error);
+    }
+  }
+
+  useEffect(() => {
+    const fetchPassList = async () => {
+      try {
+        const storedPassList = await SecureStore.getItemAsync('pass-list');
+        if (storedPassList) {
+          setPassList(JSON.parse(storedPassList));
+        }
+      } catch (error) {
+        console.error('Fetching error:', error);
+      }
+    };
+    fetchPassList();
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('create')}
+          style={{ marginRight: 10 }}
+        >
+          <Ionicons name="add-circle" size={40} color="#fff" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+
+      <View style={styles.container}>
+        <FlatList
+          data={passList}
+          keyExtractor={(item: ItemProps) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Item
+              item={item}
+              handleRemove={handleRemove}
+            />
+          )}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: '#25292e',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  text: {
+    color: '#fff',
+  }
 });
